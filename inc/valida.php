@@ -12,7 +12,7 @@ $bd = open_database();
 
 try {
 
-    $bd->select_db(DB_NAME);
+    $bd = open_database();
     $usuario = $_POST['login'];
     $senha = $_POST['senha'];
 
@@ -20,13 +20,18 @@ try {
     if (!empty($usuario) && !empty($senha)) {
         $senha = criptografia($_POST['senha']);
 
-        $sql = "SELECT id, nome, user, password FROM usuarios WHERE (user = '" . $usuario . "') AND (password = '" . $senha . "') LIMIT 1";
+        $sql = $bd->prepare("SELECT id, nome, user, password FROM usuarios WHERE user = ? AND password = ? LIMIT 1");
+        $sql->bindParam(1, $usuario, PDO::PARAM_STR);
+        $sql->bindParam(2, $senha, PDO::PARAM_STR);
 
-        $query = $bd->query($sql);
+
+        $sql->execute();
 
 
-        if ($query->num_rows > 0) {
-            $dados = $query->fetch_assoc();
+        if ($row = $sql->rowCount() > 0) {
+			
+            $dados = $sql->fetch(PDO::FETCH_ASSOC);
+			
             echo "<b>";
             var_dump($dados);
             echo "<b>";
@@ -34,7 +39,7 @@ try {
             $id = $dados['id'];
             $nome = $dados['nome'];
             $user = $dados['user'];
-            $passoword = $dados['password'];
+            $password = $dados['password'];
             var_dump($user);
 
             if (!empty($user)) {
