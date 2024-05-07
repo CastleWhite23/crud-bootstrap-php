@@ -2,6 +2,7 @@
 
     include('../config.php');
     include(DBAPI);
+    include(PDF);
 
     $usuario = null;
     $usuarios = null;
@@ -146,8 +147,27 @@
         header('Location: index.php');
       }
 
+    /* 
+        Gerando PDf
+    */
 
+    function pdf($p = null){
+        $pdf = new PDF();
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',12);
+        $usuarios = null;
+        if ($p) {
+            $usuarios = filter("usuarios", "nome like '%" . $p . "%'");
+        }else{
+            $usuarios = find_all("usuarios");
+        }
+        foreach ($usuarios as $usuario) { 
+            $pdf->Cell(0,10,$usuario['id'] . " - " . $usuario['nome'] . "-" . $usuario['user'],0,1);
 
+        }
+        $pdf->Output();
+    }
 
 
 

@@ -3,7 +3,7 @@ include('functions.php');
 if (!isset($_SESSION))
     session_start();
 
-    if (!isset($_GET['pdf'])){
+    if (isset($_GET['pdf'])){
         if ($_GET['pdf']=="ok"){
             pdf() ;
         } else {
