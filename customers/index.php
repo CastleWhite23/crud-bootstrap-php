@@ -26,13 +26,13 @@ include(HEADER_TEMPLATE);
                                 <a class="btn btn-secondary" href="add.php"><i class="fa-solid fa-user-plus"></i> Novo Cliente</a>
                             <?php endif; ?>
                         <?php endif; ?>
-
-                        <a class="btn btn-light" href="index.php"><i class="fa-solid fa-refresh"></i> Atualizar</a>
                         <?php if ($_SERVER["REQUEST_METHOD"]== "POST") : ?>
                         <a class="btn btn-danger" href="index.php?pdf=<?php echo $_POST['users'];?>" download><i class="fa-solid fa-file-pdf"></i> Listagem </a> 
                         <?php else : ?>
                         <a class="btn btn-danger" href="index.php?pdf=ok" download><i class="fa-solid fa-file-pdf"></i> Listagem </a>
-                        <?php endif;?>
+                        <?php endif;?>       
+                        <a class="btn btn-light" href="index.php"><i class="fa-solid fa-refresh"></i> Atualizar</a>
+                       
                     </div>
                 </div>
             </header>

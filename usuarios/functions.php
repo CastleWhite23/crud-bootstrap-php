@@ -153,9 +153,11 @@
 
     function pdf($p = null){
         $pdf = new PDF();
+        $pdf->setTitulo("Listagem de Usuarios");
         $pdf->AliasNbPages();
         $pdf->AddPage();
         $pdf->SetFont('Times','',12);
+        $pdf->SetTitle("Listagem de Usuarios");
         $usuarios = null;
         if ($p) {
             $usuarios = filter("usuarios", "nome like '%" . $p . "%'");
