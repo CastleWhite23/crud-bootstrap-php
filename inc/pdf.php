@@ -21,11 +21,11 @@ class PDF extends FPDF
      
    
         foreach ($lines as $line)
-        var_dump($line);
+
             $new_line= array($line['id'], $line['nome'], $line['user'], $line['foto']);
-            var_dump($new_line);
+           
     
-            $data[] = explode(';', $new_line);
+            $data[] =  $new_line;
        
         return $data;
     }
@@ -41,10 +41,8 @@ class PDF extends FPDF
         foreach ($data as $row) {
             
             foreach ($row as $col)
-            var_dump(!$row['password']);
-                if (!$row['password']) {
                     $this->Cell(40, 10, $col, 1);
-                }
+                
     
             $this->Ln();
         }
