@@ -170,12 +170,12 @@ function pdf($p = null)
         $usuarios = find_all("usuarios");
     }
 
-    $header = array('ID', 'NOME', 'USERNAME', 'SENHA', 'FOTO');
+    $header = array('ID', 'NOME', 'USERNAME', 'FOTO');
     $data = $pdf->LoadData($usuarios);
     //var_dump($data);
     $pdf->SetFont('Arial', '', 12);
     $pdf->AddPage();
-    $pdf->BasicTable($header, $usuarios);
+    $pdf->BasicTable($header, $data);
     // $pdf->AddPage();
  //$pdf->ImprovedTable($header, $usuarios);
     // $pdf->AddPage();
