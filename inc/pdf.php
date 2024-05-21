@@ -1,35 +1,37 @@
 <?php
 require("fpdf.php");
-
+require('../config.php');
+ 
+ 
 class PDF extends FPDF
 {
     private $titulo;
-
+ 
     // Método para definir o título
     function setTitulo($titulo)
     {
         $this->titulo = $titulo;
     }
-
+ 
     // Load data
     function LoadData($file)
     {
         // Read file lines
         $lines = $file;
         $data = array();
-
-     
+ 
+       
    
-        foreach ($lines as $line)
-
-            $new_line= array($line['id'], $line['nome'], $line['user'], $line['foto']);
+        foreach ($lines as $line){
            
-    
-            $data[] =  $new_line;
+            $new_line= array($line['id'], $line['nome'], $line['user'], $line['foto']);
+            array_push($data, $new_line);
+        }
+       
        
         return $data;
     }
-
+ 
     // Simple table
     function BasicTable($header, $data)
     {
@@ -37,17 +39,27 @@ class PDF extends FPDF
         foreach ($header as $col)
             $this->Cell(40, 7, $col, 1);
         $this->Ln();
+        
         // Data
         foreach ($data as $row) {
-            
-            foreach ($row as $col)
-                    $this->Cell(40, 10, $col, 1);
-                
-    
-            $this->Ln();
+            foreach ($row as $col){
+                // Verifica se o valor da célula é um arquivo de imagem jpg
+                if (pathinfo(basename($col), PATHINFO_EXTENSION) == 'jpg') {
+                    // Altere o caminho da imagem para um caminho absoluto
+                    $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/". $col;
+                    // Adicione a imagem à célula
+                    
+                    // Mova para a próxima célula
+                    $this->Cell(30, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 30), 0);
+                } else {
+                    // Se não for uma imagem jpg, apenas exiba o texto na célula
+                    $this->Cell(40, 20, $col, 1);
+                }
+            }
+            $this->Ln(); // Nova linha para a próxima linha de dados
         }
     }
-
+    
     // Better table
     function ImprovedTable($header, $data)
     {
@@ -68,7 +80,7 @@ class PDF extends FPDF
         // Closing line
         $this->Cell(array_sum($w), 0, '', 'T');
     }
-
+ 
     // Colored table
     function FancyTable($header, $data)
     {
@@ -107,7 +119,7 @@ class PDF extends FPDF
         $this->Cell(180, 10, $this->titulo, 0, 1, "C");
         $this->Ln(20);
     }
-
+ 
     //Footer
     function Footer()
     {
