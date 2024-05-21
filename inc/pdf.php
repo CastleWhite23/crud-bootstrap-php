@@ -44,13 +44,19 @@ class PDF extends FPDF
         foreach ($data as $row) {
             foreach ($row as $col){
                 // Verifica se o valor da célula é um arquivo de imagem jpg
-                if (pathinfo(basename($col), PATHINFO_EXTENSION) == 'jpg') {
+                if (pathinfo(basename($col), PATHINFO_EXTENSION) == 'jpg' || $col == null) {
                     // Altere o caminho da imagem para um caminho absoluto
-                    $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/". $col;
+                    
                     // Adicione a imagem à célula
                     
+                    if($col == null){
+                        $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/sem_imagem.jpg";
+                    }else{
+                        $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/". $col;
+                    }
                     // Mova para a próxima célula
-                    $this->Cell(30, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 30), 0);
+                    $this->Cell(30, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 40, 20), 0);
+                    
                 } else {
                     // Se não for uma imagem jpg, apenas exiba o texto na célula
                     $this->Cell(40, 20, $col, 1);
