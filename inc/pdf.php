@@ -37,7 +37,7 @@ class PDF extends FPDF
     {
         // Header
         foreach ($header as $col)
-            $this->Cell(50, 7, $col, 0);
+            $this->Cell(50, 20, $col, 0);
         $this->Ln();
         
         // Data
@@ -55,11 +55,11 @@ class PDF extends FPDF
                         $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/". $col;
                     }
                     // Mova para a próxima célula
-                    $this->Cell(40, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 40, 20), 1);
+                    $this->Cell(40, 30, $this->Image($imagePath, $this->GetX(), $this->GetY(), 40, 20), 0);
                     
                 } else {
                     // Se não for uma imagem jpg, apenas exiba o texto na célula
-                    $this->Cell(50, 20, $col, 1);
+                    $this->Cell(50, 30, $col, 0);
                 }
             }
             $this->Ln(); // Nova linha para a próxima linha de dados
