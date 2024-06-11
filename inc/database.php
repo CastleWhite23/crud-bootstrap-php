@@ -320,29 +320,24 @@ function filter($table = null, $p = null)
 	$database = open_database();
 	$found = null;
 
-	try {
+	
+	try{
 		if ($p) {
-
-			$sql = $database->prepare("SELECT * FROM " . $table . " WHERE ?");
-			$sql->bindParam(1, $p);
-			$sql->execute();
-
-			$result = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-
-			if ($result) {
-				$found = array();
-				while ($row = $sql->fetchAll(PDO::FETCH_ASSOC)) {
-					array_push($found, $row);
-				}
-			} else {
-				throw new PDOException("Não foram encontrados registros de dados!");
+			$stmt = $database->prepare("SELECT * FROM ". $table . " WHERE nome LIKE ?");
+			$stmt->bindParam(1, $p, PDO::PARAM_STR);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if ($stmt->rowCount() > 0){
+				$found = $result;
+			} else{
+				throw new Exception("Não foram encontrados registros de dados!");
 			}
 		}
-	} catch (PDOException $e) {
+	} catch(Exception $e) {
 		$_SESSION['message'] = "Ocorreu um erro: " . $e->GetMessage();
 		$_SESSION['type'] = "danger";
 	}
+
 
 	close_database($database);
 	return $found;
