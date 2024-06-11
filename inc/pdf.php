@@ -37,29 +37,29 @@ class PDF extends FPDF
     {
         // Header
         foreach ($header as $col)
-            $this->Cell(40, 7, $col, 1);
+            $this->Cell(50, 7, $col, 0);
         $this->Ln();
         
         // Data
         foreach ($data as $row) {
             foreach ($row as $col){
                 // Verifica se o valor da célula é um arquivo de imagem jpg
-                if (pathinfo(basename($col), PATHINFO_EXTENSION) == 'jpg' || $col == null) {
+                if (pathinfo(basename($col), PATHINFO_EXTENSION) == 'jpg' || pathinfo(basename($col), PATHINFO_EXTENSION) == 'png'|| pathinfo(basename($col), PATHINFO_EXTENSION) == 'webp' ||  $col == null) {
                     // Altere o caminho da imagem para um caminho absoluto
                     
                     // Adicione a imagem à célula
                     
                     if($col == null){
-                        $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/sem_imagem.jpg";
+                        $imagePath =  'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/sem_imagem.jpg";
                     }else{
                         $imagePath = 'http://' . SERVERNAME . BASEURL.  "usuarios/fotos/". $col;
                     }
                     // Mova para a próxima célula
-                    $this->Cell(30, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 40, 20), 0);
+                    $this->Cell(40, 20, $this->Image($imagePath, $this->GetX(), $this->GetY(), 40, 20), 1);
                     
                 } else {
                     // Se não for uma imagem jpg, apenas exiba o texto na célula
-                    $this->Cell(40, 20, $col, 1);
+                    $this->Cell(50, 20, $col, 1);
                 }
             }
             $this->Ln(); // Nova linha para a próxima linha de dados
@@ -130,7 +130,7 @@ class PDF extends FPDF
     function Footer()
     {
         $this->SetY(-15);
-        $this->SetFont("Arial", "I", 0);
-        $this->Cell(0, 10, 'Pagina ' . $this->PageNo() .  'de (nb)', 0, 0, 'C');
+        $this->SetFont("Arial", "I", 8);
+        $this->Cell(0,10,'Pagina '.$this->PageNo().'/{nb}',0,0,'C');
     }
 }
