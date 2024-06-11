@@ -13,9 +13,9 @@ $usuarios = null;
 function index()
 {
     global $usuarios;
-    if (!empty($_POST['users'])) {
-        $usuarios = filter("usuarios", "nome like '%" . $_POST['users'] . "%'");
-    } else {
+    if(!empty($_POST['users'])) {
+        $usuarios = filter("usuarios", "%" . $_POST['users'] . "%");
+    } else{
         $usuarios = find_all("usuarios");
     }
 }
@@ -160,12 +160,12 @@ function pdf($p = null)
 {
     $pdf = new PDF();
     $pdf->setTitulo("Listagem de Usuarios");
-    // $pdf->AliasNbPages();
+
     // $pdf->AddPage();
     // $pdf->SetFont('Times','',12);
     // $pdf->SetTitle("Listagem de Usuarios");
     if ($p) {
-        $usuarios = filter("usuarios", "nome like '%" . $p . "%'");
+        $usuarios = filter("usuarios", "%" . $p . "%");
     } else {
         $usuarios = find_all("usuarios");
     }
@@ -174,6 +174,7 @@ function pdf($p = null)
     $data = $pdf->LoadData($usuarios);
     //var_dump($data);
     $pdf->SetFont('Arial', '', 12);
+    $pdf->AliasNbPages();
     $pdf->AddPage();
     $pdf->BasicTable($header, $data);
     // $pdf->AddPage();
